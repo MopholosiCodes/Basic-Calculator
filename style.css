@@ -10,19 +10,18 @@
     justify-content: center;
     align-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
     background-color: whitesmoke;
 }
 
 #calculator-container {
     background-color: black;
-    border: 15px solid rgb(109, 109, 109);
+    border: 15px solid rgb(59, 58, 58);
     border-radius: 4px;
     display: grid;
     grid-template-columns: repeat(4, 100px);
     grid-template-rows: minmax(100px, auto) repeat(5, 80px);
-    gap: 2px;
 }
 
 .display-screen {
@@ -33,19 +32,14 @@
     justify-content: space-around;
     align-items: flex-end;
     padding: 5px;
-    font-size: 5.5em;
-    font-weight: initial;
-    text-shadow: 1.3px 1.3px #383838;
-    margin: 5px;
+    font-size: 5em;
 }
 
 button {
-    margin: 1px;
-    border-radius: 5%;
+    margin: 2px;
+    border-radius: 5px;
     border: none;
-    font-weight: initial;
     font-size: 2em;
-    font-family: monospace;
     color: black;
 }
 
@@ -86,10 +80,9 @@ button {
 .zero-btn:active,
 .number-btn:active,
 .decimal-btn:active {
-background-color: #7ac47a;
+    background-color: #7ac47a;
 }
 
-/*dark mode coming soon*/
 
 
 
