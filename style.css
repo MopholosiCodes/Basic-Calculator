@@ -1,0 +1,99 @@
+* {
+    text-align: center;
+    margin: 0%;
+    padding: 0%;
+}
+
+/* Light Mode */
+#calculator {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: whitesmoke;
+}
+
+#calculator-container {
+    background-color: black;
+    border: 15px solid rgb(109, 109, 109);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(100px, auto) repeat(5, 80px);
+    gap: 2px;
+}
+
+.display-screen {
+    grid-column: 1 / -1;
+    background-color: #b2b9b7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 5px;
+    font-size: 5.5em;
+    font-weight: initial;
+    text-shadow: 1.3px 1.3px #383838;
+    margin: 5px;
+}
+
+button {
+    margin: 1px;
+    border-radius: 5%;
+    border: none;
+    font-weight: initial;
+    font-size: 2em;
+    font-family: monospace;
+    color: black;
+}
+
+.zero-btn {
+    grid-column: span 2;
+}
+
+.operator-btn,
+.equal-btn {
+    background-color: #FF8F1F;    
+}
+
+.operator-btn:active,
+.equal-btn:active {
+    background-color: #ffc183;
+}
+
+.decimal-btn,
+.clear-btn, 
+.sign-btn, 
+.percent-btn {
+    background-color: dodgerblue;
+}
+
+.decimal-btn:active,
+.sign-btn:active, 
+.percent-btn:active,
+.clear-btn:active {
+    background-color: rgb(123, 189, 255);
+}
+
+.zero-btn,
+.number-btn,
+.decimal-btn {
+    background-color: darkgreen;
+}
+
+.zero-btn:active,
+.number-btn:active,
+.decimal-btn:active {
+background-color: #7ac47a;
+}
+
+/*dark mode coming soon*/
+
+
+
+
+
+
+
