@@ -1,103 +1,142 @@
-const calculatorButtons = document.getElementsByTagName('button');
-const displayScreen = document.getElementById('display-screen');
-let firstNum = null
-    , secondNum = null
-    , operator = null
-    , secondOperand = null
-    , answer = null
+const buttons = document.querySelectorAll('button');
+const display = document.getElementById('display-screen');
 
-// various button events
+let displayValue = '0'
+    , firstOperand = null
+    , secondOperand = null
+    , firstOperator = null
+    , secondOperator = null
+    , result = null;
+
+const enteredOperator = operator => {
+    if (firstOperator != null && secondOperator === null) {
+        secondOperator = operator;
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
+        displayValue = roundOff(result, 15).toString();
+        firstOperand = displayValue;
+        result = null;
+    } else if (firstOperator != null && secondOperator != null) {
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
+        secondOperator = operator;
+        displayValue = roundOff(result, 15).toString();
+        firstOperand = displayValue;
+        result = null;
+    } else {
+        firstOperator = operator;
+        firstOperand = displayValue;
+    }
+}
+
+const equalSign = () => {
+    if (firstOperator === null) displayValue = displayValue;
+    else if (secondOperator != null) {
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
+        if (result === 'lmao') displayValue = 'lmao';
+        else {
+            displayValue = roundOff(result, 15).toString();
+            firstOperand = displayValue;
+            secondOperand = null;
+            firstOperator = null;
+            secondOperator = null;
+            result = null;
+        }
+    } else {
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
+        if (result === 'lmao') displayValue = 'lmao';
+        else {
+            displayValue = roundOff(result, 15).toString();
+            firstOperand = displayValue;
+            secondOperand = null;
+            firstOperator = null;
+            secondOperator = null;
+            result = null;
+        }
+    }
+}
+
 const clickButton = () => {
-    for (let i = 0; i < calculatorButtons.length; i++) {
-        calculatorButtons[i].addEventListener('click', () => {
-            if (calculatorButtons[i].classList.contains('number-btn')) {
-                storeEnteredNumbers(calculatorButtons[i].innerHTML)
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', () => {
+            if (buttons[i].classList.contains('number-btn')) {
+                enteredNumber(buttons[i].innerHTML);
                 updateDisplay();
-            } else if (calculatorButtons[i].classList.contains('clear-btn')) {
+            } else if (buttons[i].classList.contains('operator-btn')) {
+                enteredOperator(buttons[i].innerHTML);
+            } else if (buttons[i].classList.contains('equal-btn')) {
+                equalSign();
+                updateDisplay();
+            } else if (buttons[i].classList.contains('decimal-btn')) {
+                addDecimal(buttons[i].innerHTML);
+                updateDisplay();
+            } else if (buttons[i].classList.contains('percent-btn')) {
+                ConvertToPercent(displayValue);
+                updateDisplay();
+            } else if (buttons[i].classList.contains('sig-btn')) {
+                addSign(displayValue);
+                updateDisplay();
+            } else if (buttons[i].classList.contains('clear-btn')) {
                 clearDisplay();
-            } else if (calculatorButtons[i].classList.contains('operator-btn')) {
-                storeEnteredOperator(calculatorButtons[i].innerHTML);
                 updateDisplay();
-            } else if (calculatorButtons[i].classList.contains('decimal-btn')) {
-                console.log(calculatorButtons[i].innerHTML);
-            } else if (calculatorButtons[i].classList.contains('sign-btn')) {
-                console.log(calculatorButtons[i].innerHTML);
-            } else if (calculatorButtons[i].classList.contains('percent-btn')) {
-                convertToPercentage(calculatorButtons[i].innerHTML);
-            } else if (calculatorButtons[i].classList.contains('equal-btn')) {
-                operate(firstNum, secondNum, operator);
-                updateDisplay();
-                firstNum = null;
-                secondNum = null;
-                operator = null;
-                answer = null;
-            } else return
-        });
+            }
+        })
     }
 }
 
 clickButton();
 
-// store enetered number
-const storeEnteredNumbers = number => {
-    if (firstNum === null && operator === null) firstNum = number;
-    else if (firstNum !== null && operator === null) firstNum += number;
-    else if (firstNum !== null && operator !== null) {
-        if (secondNum === null) secondNum = number;
-        else if (secondNum !== null) secondNum += number;
-        else return;
-    } else return;
+const enteredNumber = number => {
+    if (firstOperator === null) {
+        if (displayValue.toString() === '0') displayValue = number;
+        else if (displayValue === firstOperand) displayValue = number;
+        else displayValue += number;
+    } else {
+        if (displayValue === firstOperand) displayValue = number;
+        else displayValue += number;
+    }
 }
 
-// store entered operator
-const storeEnteredOperator = enteredOperator => {
-    if (operator === null) operator = enteredOperator;
-    else return;
+const addDecimal = decimal => {
+    if (displayValue === firstOperand || displayValue === secondOperand) {
+        displayValue = '0';
+        displayValue += decimal;
+    } else if (!displayValue.includes(decimal)) displayValue += decimal;
 }
 
-// perform the calculation
-const operate = (firstNumber, secondNumber, operator) => {
-    if (operator === '+') answer = Number(firstNumber) + Number(secondNumber);
-    else if (operator === '-') answer = Number(firstNumber) - Number(secondNumber);
-    else if (operator === 'x') answer = Number(firstNumber) * Number(secondNumber);
-    else if (operator === '/') answer = Number(firstNumber) / Number(secondNumber);
-    else return;
+const clearDisplay = () => {
+    displayValue = '0';
+    firstOperand = null;
+    secondOperand = null;
+    firstOperator = null;
+    secondOperator = null;
+    result = null;
 }
 
-// update the display screen
 const updateDisplay = () => {
-    if (firstNum === null && operator === null) displayScreen.textContent = 0;
-    else if (firstNum !== null && operator === null) displayScreen.textContent = firstNum;
-    else if (firstNum !== null && operator !== null) {
-        if (secondNum === null) displayScreen.textContent = 0;
-        else if (secondNum !== null) {
-            if (answer === null) displayScreen.textContent = secondNum;
-            else displayScreen.textContent = answer;
-        } else return;
-    } else return;
-    console.log(firstNum, operator, secondNum, answer);
+    display.innerText = displayValue;
+    if (displayValue.length > 9) display.innerText = displayValue.substring(0, 9);
 }
 
 updateDisplay();
 
-// clear the diplay screen ad all saved inputs
-const clearDisplay = () => {
-    displayScreen.textContent = "0";
-    firstNum = null;
-    secondNum = null;
-    answer = null;
-    operator = null;
-    console.log(firstNum, operator, secondNum, answer);
+const operate = (firstNum, secondNum, operator) => {
+    if (operator === '+') return firstNum + secondNum;
+    else if (operator === '-') return firstNum - secondNum;
+    else if (operator === 'x') return firstNum * secondNum;
+    else if (operator === '/') {
+        if (secondNum === 0) return 'Error';
+        else return firstNum / secondNum;
+    }
 }
 
-const convertToPercentage = enteredNumber => {
+const convertToPercent = (number) =>
+    displayValue = (number / 100).toString();
 
-}
+const addSign = (number) =>
+    displayValue = (number * -1).toString();
 
-const convertToDecimal = enteredNumber => {
-
-}
-
-const convertToNegetiveNumber = enteredNumber => {
-
-}
+const roundOff = (number, places) =>
+    parseFloat(Math.round(number + 'e' + places) + 'e-' + places);
