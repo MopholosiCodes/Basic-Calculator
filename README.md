@@ -1,3 +1,3 @@
-## Basic-Calculator
+# MopholosiCodes.github.io
 
 https://mopholosicodes.github.io/
