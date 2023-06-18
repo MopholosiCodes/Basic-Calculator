@@ -1,5 +1,5 @@
 ## Basic-Calculator
-This calculator contains functions for all of the basic math operators you typically find on simple calculators.
+Calculator with the four basic mathematical operations
 ## Technology Stack
 1. HTML5
 2. CSS3
